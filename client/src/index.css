@@ -1,3 +1,14 @@
+:root {
+  --dark-blue: #222831;
+  --light-blue: #2d4059;
+  --orange: #ff5722;
+  --white: #eee;
+}
+
+html {
+  font-size: 16px;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +16,148 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(to right, #222831, #2d4059 130%);
+  color: #fff;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+main {
+  position: relative;
+  padding-block-start: 2.5rem;
+  min-height: 100vh;
+}
+
+h1{
+  font-size: 45px;
+  text-align: center;
+}
+
+.container {
+	width: 100%;
+	height: 100%;
+	padding-inline-end: -15px !important;
+	margin-inline-end: auto;
+	padding-inline-start: -15px !important;
+	margin-inline-start: auto;
+}
+
+.row {
+	position: relative;
+	height: 100%;
+	padding-inline-end: 20px;
+	padding-inline-start: 20px;
+}
+
+.sc-card-creator{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-block-start: 5rem;
+}
+
+.sc--card_item{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 45%;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 1.5625rem;
+  background-color: var(--white);
+  color: #222831;
+  cursor: pointer;
+  box-shadow: 0 .5rem 1rem rgba(238,238,238,.15);
+  overflow: hidden;
+  transition: width .8s ease;
+  text-align: center;
+}
+
+.sc--card_item a{
+  font-size: 1rem;
+  transition: color .5s ease;
+  text-decoration: underline;
+  color: var(--dark-blue);
+  transition: color .4s ease;
+}
+
+.sc--card_content{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  flex-grow: 1;
+}
+
+.sc--card_item a:hover{
+  color: var(--orange);
+}
+
+.sc--card_content::before,
+.sc--card_content::after{
+  content: '';
+  display: block;
+  width: 2px;
+  height: 80px;
+  background-color: #222831;
+  transform: skewX(-10deg)
+}
+
+.sc--card_item img{
+  height: 80px;
+  object-fit: contain;
+}
+
+.sc--card_item p{
+  position: absolute;
+  font-size: 0.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10px;
+}
+
+.sc--card-refund{
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  background-color: #637eea;
+  color: #fff;
+  font-size: 2.2rem;
+}
+
+@media screen and (min-width: 576px){
+  .container{
+      width: 540px;
+  }
+}
+@media screen and (min-width: 768px){
+  .container{
+      width: 720px;
+  }
+}
+@media screen and (min-width: 992px){
+  .container{
+      width: 960px;
+  }
+}
+@media screen and (min-width: 1200px){
+  .container{
+      width: 1140px;
+  }
+}
+@media screen and (min-width: 1400px){
+  .container{
+      width: 1320px;
+  }
 }
