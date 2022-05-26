@@ -104,7 +104,10 @@ label,
 input[type=button],
 input[type=submit],
 input[type=file],
-button {cursor: pointer;}
+button {
+	cursor: pointer;
+	user-select: none;
+}
 
 /* Webkit browsers add a 2px margin outside the chrome of form elements */
 button, input, select, textarea {margin: 0; padding: 0;}

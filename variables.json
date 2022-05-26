@@ -1,7 +1,9 @@
 {
     "HAS_WHITELIST": true,
     "HAS_REFUND": false,
+    "HAS_REVOKE": false,
     "REFUND_DAYS": "45 days",
+    "REFUND_CONTRACT_VERSION": "ERC721A",
     "CONTRACT_NAME": "MutantSerum",
     "CONTRACT_NAME_WITH_SPACING": "Mutant Serum",
     "CONTRACT_SHORT_NAME": "MS",
