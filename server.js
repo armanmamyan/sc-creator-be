@@ -13,7 +13,7 @@ fs.readJson("./variables.json", async(err, packageObj) => {
 
   const variableNames = new RegExp(Object.keys(packageObj).join("|"), "gi");
 
-  const fileStream = fs.createReadStream('./templates/ERC721OptimizedWithPresale.sol', 'utf-8');
+  const fileStream = fs.createReadStream('./templates/ERC721AStandard.sol', 'utf-8');
   const writeStream = fs.createWriteStream(`./templates/${packageObj["CONTRACT_NAME"]}.sol`)
 
   const rl = readline.createInterface({

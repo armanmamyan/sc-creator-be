@@ -4,13 +4,13 @@ import Azuki from "./assets/azuki.png";
 import ETH from "./assets/eth.png";
 
 function App() {
-  const contractForm = useRef();
+  const contractForm = useRef(null);
   const [contract, setContract] = useState("");
 
   const handleContractSelection = (e) => {
     const { id, parentElement } = e.currentTarget;
     setContract(id);
-    parentElement.classList.add("contract--selected")
+    parentElement.classList.add("contract--selected");
     contractForm.current.classList.add("contract--selected");
   };
 
@@ -31,7 +31,7 @@ function App() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Curated by Azuki team
+                Created by Azuki team
               </a>
             </div>
             <img src={Azuki} alt="ERC721 A" />
@@ -66,14 +66,18 @@ function App() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Curated by EXO Digital Labs
+                Created by EXO Digital Labs
               </a>
               <p>{`(Cut gas fee up to 70%)`}</p>
             </div>
             <div className="sc--card-refund">R</div>
           </div>
         </div>
-        <Form contractName={contract} ref={contractForm} />
+        <Form
+          setContract={setContract}
+          contractName={contract}
+          ref={contractForm}
+        />
       </div>
     </main>
   );
