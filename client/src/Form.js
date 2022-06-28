@@ -1,17 +1,58 @@
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useCallback } from "react";
+import CodeMirror from "@uiw/react-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
 
 const Form = forwardRef(({ contractName, setContract }, ref) => {
   const [contractDetails, setContractDetails] = useState({});
   const [hasWhitelist, setHasWhitelist] = useState(false);
+  const [downloadContent, setDownloadContent] = useState({
+    url: "",
+    fileName: "",
+  });
+  const [codemirror, setCodeMirror] = useState(
+    `const code = "You Will see the generated code here"`
+  );
   const [hasRefund, setHasRefund] = useState(false);
   const [hasRevoke, setHasRevoke] = useState(false);
   const is721A = contractName === "erc721A";
   const isRefund = contractName === "refund";
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(contractDetails);
-  };
+
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      const contractCreationData = {
+        ...contractDetails,
+        CONTRACT_VERSION: contractName.toUpperCase(),
+      };
+
+      try {
+        const createContract = await fetch("/api/create-contract", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contractCreationData),
+        });
+
+        const contractToText = await createContract.text();
+        const url = `data:text/plain;charset=utf-8,${encodeURIComponent(contractToText)}`;
+
+        setDownloadContent({
+          url,
+          fileName: `${contractDetails["NAME_WITH_SPACING"]}.sol`,
+        });
+        URL.revokeObjectURL(url);
+        setCodeMirror(contractToText);
+        setContractDetails({});
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [contractDetails]
+  );
 
   const handleGoBack = (e) => {
     const form = ref.current;
@@ -51,7 +92,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
   };
 
   return (
-    <div ref={ref} className="row form--row">
+    <div ref={ref} className="form--row">
       <form onSubmit={handleSubmit} className="form--container">
         <button
           type="button"
@@ -122,7 +163,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
           </label>
           <input
             id="withSpaces"
-            data-label="contract_name_with_spacing"
+            data-label="NAME_WITH_SPACING"
             className="form--input"
             type="text"
             placeholder="Contract Name"
@@ -258,6 +299,24 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
           </button>
         </div>
       </form>
+      <div>
+        <div className="submission-code">
+          <CodeMirror
+            value={codemirror}
+            height=""
+            theme="dark"
+            extensions={[javascript({ jsx: true })]}
+            editable={false}
+          />
+        </div>
+        <a
+          href={downloadContent.url}
+          download={downloadContent.fileName}
+          className="form--btn btn--download"
+        >
+          Download contract
+        </a>
+      </div>
     </div>
   );
 });

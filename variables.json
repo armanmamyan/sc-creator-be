@@ -5,7 +5,7 @@
     "REFUND_DAYS": "45 days",
     "REFUND_CONTRACT_VERSION": "ERC721A",
     "CONTRACT_NAME": "MutantSerum",
-    "CONTRACT_NAME_WITH_SPACING": "Mutant Serum",
+    "NAME_WITH_SPACING": "Mutant Serum",
     "CONTRACT_SHORT_NAME": "MS",
     "MINT_PRICE": "0.07",
     "PRESALE_PRICE": "0.01",

@@ -143,6 +143,7 @@ h1{
 }
 
 .contract--container{
+  padding: 0 4rem;
   overflow: hidden;
 }
 
@@ -151,11 +152,23 @@ h1{
 }
 
 .form--row{
+  display: flex;
+  gap: 45px;
   transform: translateY(-250%);
 }
 
+.form--row > * {
+  flex: 0 0 48%;
+}
+
+.submission-code{
+  align-self: stretch;
+  overflow: auto;
+  height: 60vh;
+}
+
 .form--row.contract--selected{
-  transform: translateY(0)
+  transform: translateY(-20%)
 }
 
 .form--container{
@@ -256,6 +269,7 @@ h1{
 }
 
 .form--btn{
+  display: block;
   width: 100%;
   height: 40px;
   background-color: var(--orange);
@@ -274,6 +288,13 @@ h1{
   justify-content: center;
   gap: 15px;
   font-size: 18px;
+}
+
+.btn--download{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 250px
 }
 
 @media screen and (min-width: 576px){

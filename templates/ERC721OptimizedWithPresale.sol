@@ -32,7 +32,7 @@ contract CONTRACT_NAME is ERC721, Ownable {
   mapping(address => bool) private _allowList;
   mapping(address => uint256) private _allowListClaimed;
 
-  constructor(string memory baseURI) ERC721(CONTRACT_NAME_WITH_SPACING, CONTRACT_SHORT_NAME) {
+  constructor(string memory baseURI) ERC721(NAME_WITH_SPACING, CONTRACT_SHORT_NAME) {
     setBaseURI(baseURI);
   }
 

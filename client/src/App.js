@@ -17,8 +17,8 @@ function App() {
   return (
     <main>
       <h1>Create Your Own Smart Contract</h1>
-      <div className="contract--container container">
-        <div className="row sc-card-creator">
+      <div className="contract--container">
+        <div className="sc-card-creator">
           <div
             id="erc721A"
             onClick={handleContractSelection}

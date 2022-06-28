@@ -20,7 +20,7 @@ contract CONTRACT_NAME is ERC721A, Ownable {
   uint256 public maxAllowedTokensPerPurchase = MAX_ALLOWED_TOKENS_PER_PURCHASE;
   uint256 public maxAllowedTokensPerWallet = MAX_ALLOWED_TOKENS_PER_WALLET;
 
-  constructor(string memory baseURI) ERC721A("CONTRACT_NAME_WITH_SPACING", "CONTRACT_SHORT_NAME") {
+  constructor(string memory baseURI) ERC721A("NAME_WITH_SPACING", "CONTRACT_SHORT_NAME") {
     setBaseURI(baseURI);
   }
 
