@@ -1,0 +1,32 @@
+export const smartContractDetails = [
+    {
+        id: 'ERC721A',
+        brand: 'azuki',
+        type: 'ERC721A',
+        subtitle: '',
+        founders: 'Created by Azuki Team',
+        listOfPerks: ['Highly Known', 'Highly Optimized', 'Famous for cheap mint price'],
+        fullDescription: ['The Azuki contract will enable minting multiple NFTs for essentially the same cost of minting a single NFT.'],
+        fullDescription2: ['ERC721A is an implementation of IERC721 with significant gas savings for minting multiple NFTs in a single transaction.'],
+    },
+    {
+        id: 'ERC721+',
+        brand: 'Optimized Standard of ERC721 ',
+        type: 'ERC721+',
+        subtitle: '',
+        founders: 'Community',
+        listOfPerks: ['Save up to 70% on minting fees', 'Save up to 35% on transfer fees'],
+        fullDescription: ['Replaced ERC721Enumerable', 'Replaced total supply reliant functions with a counters solution'],
+        fullDescription2: ['Changed Your Contract’s Counter Logic', 'Checked for unobvious ERC721Enumerable imports'],
+    },
+    {
+        id: 'ERC721R',
+        brand: 'EXO DIGITAL LABS ',
+        type: 'ERC721R',
+        subtitle: '',
+        founders: 'Cut Gas Fee Up To 70% and refund logic',
+        listOfPerks: ['Low risk purchase', 'Protects against rug pulls', 'Forces greater accountability '],
+        fullDescription: ['Builds trust with buyers'],
+        fullDescription2: ['The project floor price is unlikely to drop below the mint price while refunds are open ', 'Short term flippers leave the project early leaving a high quality core intact'],
+    },
+]

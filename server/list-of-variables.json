@@ -1,0 +1,19 @@
+{
+    "HAS_WHITELIST": true,
+    "HAS_REFUND": false,
+    "HAS_REVOKE": false,
+    "HAS_MERKLE": false,
+    "REFUND_DAYS": "45 days",
+    "REFUND_CONTRACT_VERSION": "ERC721A",
+    "CONTRACT_NAME": "ContractName",
+    "NAME_WITH_SPACING": "Contract Name",
+    "CONTRACT_SHORT_NAME": "CN",
+    "MINT_PRICE": "0.07",
+    "PRESALE_PRICE": "0.01",
+    "RESERVATION_ATIME": "125",
+    "MAX_RESERVATION": "250",
+    "MAXIMUM_SUPPLY": "10000",
+    "MAX_ALLOWED_TOKENS_PER_PURCHASE": "10",
+    "MAX_ALLOWED_TOKENS_PER_WALLET": "10",
+    "PRESALE_WALLET_LIMITATION": "3"
+}
