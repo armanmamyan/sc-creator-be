@@ -4,8 +4,8 @@
 
 @layer base {
   body {
-    background-color: theme("colors.black");
-    color: theme("colors.white");
+    background-color: theme("colors.snowWhite");
+    color: theme("colors.black");
   }
 }
 
@@ -14,7 +14,89 @@
 }
 
 .sc-card{
-  background-color: theme("colors.navy");
+  position: relative;
+  cursor: pointer;
+  background: theme("colors.white");
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+  border-radius: 15px;
+}
+
+.sc-card::before{
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(to top,#b91d44,  #edadbb);
+  transition: opacity .5s ease;
+  opacity: 0;
+  border-radius: 15px;
+}
+
+.sc-card:hover, .sc-card:hover svg path{
+  color: theme("colors.white");
+  fill: theme("colors.white");
+}
+
+.sc-card:hover button{
+  transition: background-color .8s ease, color .2s ease;
+  background-image: none !important;
+  background-color: theme("colors.white");
+  color: theme("colors.black");
+}
+
+.sc-card:hover::before{
+  opacity: 1;
+}
+
+.sc-card:hover .sc-banner{
+  transform: rotateZ(-8.5deg) scale(1.12) translateZ(10px);
+
+}
+
+.sc--cards-container > div:nth-child(2)::before{
+  background-image: linear-gradient(to top,#3d4a8e,  #8aa9ce);
+}
+.sc--cards-container > div:nth-child(3)::before{
+  background-image: linear-gradient(to top, #6a0ba1,  #b88eff);
+}
+
+.sc--cards-container > div:nth-child(2):hover .sc-banner{
+  transform: rotateZ(10deg) scale(1.12) translateZ(10px);
+}
+
+.sc-banner {
+  width: 100%;
+  height: 200px;
+  perspective: 1000px;
+  transition: transform .5s ease;
+}
+
+.sc-banner img {
+  display: block;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50px;
+}
+
+.sc-card button {
+  background-image:  linear-gradient(to top,#b91d44,  #edadbb);
+}
+
+.sc--cards-container > div:nth-child(2) button{
+  background-image: linear-gradient(to top,#3d4a8e,  #8aa9ce);
+}
+.sc--cards-container > div:nth-child(3) button{
+  background-image: linear-gradient(to top, #6a0ba1,  #b88eff);
+}
+
+.sc--content-wrapper{
+  background-color: rgba(255,255,255,.3);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
 }
 
 .side-header {
@@ -22,7 +104,7 @@
   top: 0;
   left: 0;
   z-index: 100;
-  background-color: theme("colors.orange");
+  background-color: theme("colors.white");
 }
 
 .side-header h2 {
@@ -41,7 +123,6 @@
 
 .gear-container {
   width: calc(100% - 80px);
-  height: calc(100vh - 80px);
   overflow-x: hidden;
   overflow-y: auto;
   margin-inline-start: auto;
@@ -58,13 +139,11 @@
 
 .form--container{
   padding: 30px 18px;
-  background-color: theme('colors.navy');
+  background-color: rgba(255,255,255,.15);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
 }
 
-.contract-form-title {
-  margin-block-end: 22px;
-}
 .form--row{
   padding-block-end: 80px;
 }
@@ -72,20 +151,19 @@
 .form--row h2 {
   font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: theme("colors.white");
   text-transform: uppercase;
 }
 
 .form--btn_back {
   font-size: 25px;
-  color: theme("colors.orange");
+  color: theme("colors.white");
 }
 
 .form-wrapper {
   position: relative;
   gap: 10px;
-  border: 1px solid theme("colors.orange");
-  background-color: theme("colors.black");
+  background-color: theme("colors.white");
   border-radius: 10px;
   cursor: pointer;
 }
@@ -107,7 +185,7 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  color: #e4e4e4;
+  color: #000;
   cursor: pointer;
 }
 
@@ -141,7 +219,7 @@
 }
 
 .form--radio:checked ~ .form--custom_checkbox {
-  background: theme('colors.orange');
+  background: theme('colors.black');
 }
 
 .form--radio:checked ~ .form--custom_checkbox::before {
@@ -152,14 +230,15 @@
     height: 52px;
     line-height: 52px;
     padding: 0 16px;
-    background: theme("colors.black");
-    color: theme("colors.white");
+    background-color :theme("colors.white");
+    color:  theme("colors.black");
     border-radius: 10px;
 }
 
 .form-wrapper-input{
     position: relative;
     margin-block-end: 20px;
+    color :theme("colors.white");
 }
 
 .form--btn{
@@ -170,11 +249,10 @@
   height: 60px;
   border-radius: 20px;
   margin-inline-start: auto;
-  border: 4px solid theme("colors.orange");
+  border: 4px solid theme("colors.white");
   font-size: 16px;
   font-weight: 500;
   text-align: center;
-  background-color: theme("colors.orange");
   color: theme("colors.white");
   transition: background-color .5s ease;
 }
@@ -185,11 +263,11 @@
 }
 
 .form--btn:hover {
-  background-color: transparent;
+  background-color: theme("colors.white");
+  color: theme("colors.black");
 }
 
 .submission-code{
-  background-color:  theme("colors.orange");
   border-radius: 20px;
 }
 
@@ -201,12 +279,12 @@
 }
 
 .action--btn-wrapper{
-  padding: 22px 32px;
-  background-color:  theme("colors.orange");
+  padding: 0 32px;
   border-radius: 20px;
 }
 
-.action--btn-wrapper a {
+.action--btn-wrapper a,
+.action--btn-wrapper button {
   max-width: 100%;
   font-size: 18px;
   line-height: 58px;
@@ -217,7 +295,7 @@
 .action--btn-wrapper a:hover {
   background-color: theme("colors.white");
   border-color: theme("colors.white");
-  color: theme("colors.orange");
+  color: theme("colors.black");
 }
 
 
@@ -259,6 +337,13 @@
 .form--input::placeholder{
     color: #7E7E7E;
 }
+
+
+.form--input:focus{
+  outline: 0;
+}
+
+
 
 footer {
   width: calc(100% - 80px);

@@ -5,11 +5,14 @@ module.exports = {
   theme: {
     colors: {
       green: "#1f271b",
-      black: "#222831",
+      black: '#000',
+      gray: "rgb(32, 34, 37)",
       navy: "#2D4059",
       orange: "#FF5722",
-      yellow: "#f4d35e",
+      yellow: "#FFD700",
       white: '#fff',
+      snowWhite: '#f6f6f6',
+      btnGradient: 'linear-gradient(110deg, #f93d66, #ffc600);'
     },
     extend: {
       fontFamily: {

@@ -1,10 +1,11 @@
 import { useState, forwardRef, useCallback, useEffect } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
+import toast from 'react-hot-toast'
 
 const Form = forwardRef(({ contractName, setContract }, ref) => {
+  // States
   const [contractDetails, setContractDetails] = useState({});
-  const [iscontractCreated, setIsContractCreated] = useState(false);
   const [hasWhitelist, setHasWhitelist] = useState(false);
   const [hasMerkle, setHasMerkle] = useState(false);
   const [downloadContent, setDownloadContent] = useState({
@@ -15,7 +16,32 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
     `const code = "You Will see the generated code here"`
   );
   const [hasRevoke, setHasRevoke] = useState(false);
+  
+  // Constants
   const isRefund = contractName === "erc721R";
+
+  // Handlers
+  const checkContractType = () => {
+    switch (contractName) {
+      case "erc721R":
+        return "erc721R"
+      case "ERC721+":
+        return "ERC721+"
+      default:
+        return "ERC721A"      
+    }
+  }
+  
+  const handleBg = () => {
+    switch (contractName) {
+      case "ERC721R":
+        return document.body.setAttribute('style', 'background-color: #6a0ba1') 
+      case "ERC721+":
+        return document.body.setAttribute('style', 'background-color: #3d4a8e') 
+      default:
+        return document.body.setAttribute('style', 'background-color: #b91d44') 
+    }
+  };
 
   const handleSCDelete = useCallback(async (e) => {
     try {
@@ -64,7 +90,6 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
         });
         URL.revokeObjectURL(url);
         setCodeMirror(contractToText);
-        setIsContractCreated(true)
       } catch (error) {
         console.error(error);
       }
@@ -73,6 +98,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
   );
 
   const handleGoBack = (e) => {
+    document.body.removeAttribute('style') 
     setContract("");
   };
 
@@ -104,6 +130,13 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
     });
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(codemirror);
+    toast.success('Copied')
+  }
+
+  // Effects
+
   useEffect(() => {
     window.addEventListener('beforeunload', handleSCDelete);
 
@@ -112,9 +145,13 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
     }
   }, [handleSCDelete])
 
+  useEffect(() => {
+    handleBg()
+  },[])
+
   return (
-    <div ref={ref} className="form--row">
-      <div className="contract-form-title flex items-center gap-3">
+    <div ref={ref} className={`form--row h-screen flex flex-col justify-center type-${checkContractType()?.toLowerCase()}`}>
+      <div className="contract-form-title flex items-center gap-3 mb-14">
         <button type="button" onClick={handleGoBack} className="form--btn_back">
           <i className="fa-solid fa-circle-arrow-left" />
         </button>
@@ -123,7 +160,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
 
       <form
         onSubmit={handleSubmit}
-        className="form--container flex flex-wrap -mx-5 mb-5"
+        className="form--container flex flex-wrap"
       >
         <div className="checkers flex items-center gap-8 mb-10 w-full px-5">
           <div className={`form-wrapper flex items-center px-4 py-3 ${hasMerkle ? 'disabled' : ''}`}>
@@ -330,9 +367,8 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
           </button>
         </div>
       </form>
-      {iscontractCreated  && (
-        <div className="contract--result flex gap-5 -mx-5">
-          <div className="submission-code py-5 px-6 w-2/3">
+      <div className="contract--result flex gap-5 mt-10">
+          <div className="submission-code pb-5 px-6 w-2/3">
             <CodeMirror
               value={codemirror}
               height=""
@@ -352,9 +388,17 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
                 Download contract
               </a>
             </div>
+            <div className="action--btn-wrapper">
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="form--btn"
+              >
+                Copy the code
+              </button>
+            </div>
           </div>
         </div>
-      )}
     </div>
   );
 });
