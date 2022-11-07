@@ -123,9 +123,10 @@
 
 .gear-container {
   width: calc(100% - 80px);
+  max-width: 1790px;
   overflow-x: hidden;
   overflow-y: auto;
-  margin-inline-start: auto;
+  margin: 0 auto;
 }
 
 .sc-details > * {
