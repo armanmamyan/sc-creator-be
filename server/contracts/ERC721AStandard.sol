@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.17;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -41,7 +41,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
   modifier mintCompliance(uint256 _mintAmount) {
     require(tx.origin == msg.sender, "Calling from other contract is not allowed.");
     require(
-      _mintAmount > 0 && numberMinted(msg.sender) + _mintAmount <= maximumAllowedTokensPerWallet,
+      _mintAmount > 0 && numberMinted(msg.sender) + _mintAmount <= maxAllowedTokensPerWallet,
        "Invalid mint amount or minted max amount already."
     );
     _;
@@ -58,7 +58,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
 
   function setMaxAllowedTokensPerWallet(uint256 _count) public onlyOwner {
     maxAllowedTokensPerWallet = _count;
-    emit SetMaximumAllowedTokensPerWallet(_count)
+    emit SetMaximumAllowedTokensPerWallet(_count);
   }
 
   function togglePublicSale() public onlyOwner {
@@ -67,7 +67,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
 
   function setMaxMintSupply(uint256 maxMintSupply) external  onlyOwner {
     MAX_SUPPLY = maxMintSupply;
-    emit SetMaximumSupply(maxMintSupply)
+    emit SetMaximumSupply(maxMintSupply);
   }
 
   function setReserveAtATime(uint256 val) public onlyOwner {

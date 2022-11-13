@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.17;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -16,6 +16,8 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
   event SetPresalePrice(uint256 _price);
   event SetBaseUri(string baseURI);
   event Mint(address userAddress, uint256 _count);
+
+  address public constant proxyRegistryAddress = 0xa5409ec958C83C3f309868babACA7c86DCB077c1;
 
 
   uint256 public mintPrice = MINT_PRICE ether;
@@ -43,7 +45,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
   mapping(address => bool) private _allowList;
   mapping(address => uint256) private _allowListClaimed;
 
-  constructor(string memory baseURI) ERC721A(NAME_WITH_SPACING, CONTRACT_SHORT_NAME) {
+  constructor(string memory baseURI) ERC721A("NAME_WITH_SPACING", "CONTRACT_SHORT_NAME") {
     setBaseURI(baseURI);
     toggleRefundCountdown();
   }
@@ -190,7 +192,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
 
   function setPresalePrice(uint256 _presalePrice) public onlyOwner {
     presalePrice = _presalePrice;
-    emit PresaleSetPrice(_presalePrice)
+    emit SetPresalePrice(_presalePrice);
   }
 
   function setBaseURI(string memory baseURI) public onlyOwner {

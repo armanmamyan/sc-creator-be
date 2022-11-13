@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.17;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
@@ -136,7 +136,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
 
   function setPresalePrice(uint256 _presalePrice) public onlyOwner {
     presalePrice = _presalePrice;
-    emit PresaleSetPrice(_presalePrice)
+    emit SetPresalePrice(_presalePrice);
   }
 
   function setBaseURI(string memory baseURI) public onlyOwner {

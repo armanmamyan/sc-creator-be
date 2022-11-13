@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -13,7 +13,7 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
   event SetMaximumAllowedTokensPerWallet(uint256 _count);
   event SetMaxTokenForPresale(uint256 _count);
   event SetPrice(uint256 _price);
-  event PresaleSetPrice(uint256 _price);
+  event SetPresalePrice(uint256 _price);
   event SetBaseUri(string baseURI);
   event Mint(address userAddress, uint256 _count);
 
@@ -57,12 +57,12 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
 
   function setMaximumAllowedTokens(uint256 _count) public onlyOwner {
     maxAllowedTokensPerPurchase = _count;
-    emit SetMaximumAllowedTokens(_count)
+    emit SetMaximumAllowedTokens(_count);
   }
 
   function setMaxAllowedTokensPerWallet(uint256 _count) public onlyOwner {
     maxAllowedTokensPerWallet = _count;
-    emit SetMaximumAllowedTokensPerWallet(_count)
+    emit SetMaximumAllowedTokensPerWallet(_count);
   }
 
   function togglePublicSale() public onlyOwner {
@@ -122,12 +122,12 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
 
   function setPresalePrice(uint256 _presalePrice) public onlyOwner {
     presalePrice = _presalePrice;
-    emit SetPresalePrice(_price);
+    emit SetPresalePrice(_presalePrice);
   }
 
   function setBaseURI(string memory baseURI) public onlyOwner {
     _baseTokenURI = baseURI;
-    emit setBaseURI(baseURI);
+    emit SetBaseUri(baseURI);
   }
 
   function getReserveAtATime() external view returns (uint256) {
@@ -203,14 +203,13 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
   }
 
   function preSaleMint(uint256 _count) public payable saleIsOpen {
-    require(tx.origin == msg.sender, "Calling from other contract is not allowed.");
-
     uint256 mintIndex = _tokenSupply.current();
 
+    require(tx.origin == msg.sender, "Calling from other contract is not allowed.");
+    require(mintIndex + _count <= MAX_SUPPLY, "Total supply exceeded.");
     require(isPresaleActive, 'Presale is not active');
     require(_allowList[msg.sender], 'You are not on the White List');
     
-    require(mintIndex < MAX_SUPPLY, 'All tokens have been minted');
     require(_count <= presaleWalletLimitation, 'Cannot purchase this many tokens');
     require(balanceOf(msg.sender) + _count <= maxAllowedTokensPerWallet, "Max holding cap reached.");
     require(msg.value >= presalePrice * _count, 'Insuffient ETH amount sent.');

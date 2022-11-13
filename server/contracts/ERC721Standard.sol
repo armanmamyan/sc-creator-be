@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -39,7 +39,7 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
   }
 
   modifier saleIsOpen {
-    require(totalSupply() < MAX_SUPPLY, "Sale has ended.");
+    require(_tokenSupply.current() < MAX_SUPPLY, "Sale has ended.");
     _;
   }
 
@@ -81,6 +81,7 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
 
   function setBaseURI(string memory baseURI) public onlyOwner {
     _baseTokenURI = baseURI;
+    emit SetBaseUri(baseURI);
   }
 
   function getReserveAtATime() external view returns (uint256) {

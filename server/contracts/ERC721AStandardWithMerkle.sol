@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.17;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
@@ -38,7 +38,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
   uint256 public presaleWalletLimitation = PRESALE_WALLET_LIMITATION;
 
 
-  constructor(string memory baseURI, bytes32 _merkleRoot) ERC721A(NAME_WITH_SPACING, CONTRACT_SHORT_NAME) {
+  constructor(string memory baseURI, bytes32 _merkleRoot) ERC721A("NAME_WITH_SPACING", "CONTRACT_SHORT_NAME") {
     setBaseURI(baseURI);
     setMerkleRootHash(_merkleRoot);
   }
@@ -89,12 +89,12 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
 
   function setMaximumAllowedTokens(uint256 _count) public onlyOwner {
     maxAllowedTokensPerPurchase = _count;
-    emit SetMaximumAllowedTokens(_count)
+    emit SetMaximumAllowedTokens(_count);
   }
 
   function setMaxAllowedTokensPerWallet(uint256 _count) public onlyOwner {
     maxAllowedTokensPerWallet = _count;
-    emit SetMaximumAllowedTokensPerWallet(_count)
+    emit SetMaximumAllowedTokensPerWallet(_count);
   }
 
   function togglePublicSale() public onlyOwner {
@@ -130,7 +130,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
 
   function setPresalePrice(uint256 _presalePrice) public onlyOwner {
     presalePrice = _presalePrice;
-    emit SetPresalePrice(_price);
+    emit SetPresalePrice(_presalePrice);
   }
 
   function setBaseURI(string memory baseURI) public onlyOwner {

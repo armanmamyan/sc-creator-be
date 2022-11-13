@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
@@ -15,7 +15,7 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
   event SetMaxTokenForPresale(uint256 _count);
   event SetRoot(bytes32 _root);
   event SetPrice(uint256 _price);
-  event PresaleSetPrice(uint256 _price);
+  event SetPresalePrice(uint256 _price);
   event SetBaseUri(string baseURI);
   event Mint(address userAddress, uint256 _count);
 
@@ -40,6 +40,7 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
   uint256 public MAX_SUPPLY = MAXIMUM_SUPPLY;
   uint256 public maxAllowedTokensPerPurchase = MAX_ALLOWED_TOKENS_PER_PURCHASE;
   uint256 public maxAllowedTokensPerWallet = MAX_ALLOWED_TOKENS_PER_WALLET;
+  uint256 public presaleWalletLimitation = PRESALE_WALLET_LIMITATION;
 
    modifier isValidMerkleProof(bytes32[] calldata merkleProof) {
         require(
@@ -75,12 +76,17 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
 
   function setMaximumAllowedTokens(uint256 _count) public onlyOwner {
     maxAllowedTokensPerPurchase = _count;
-    emit SetMaximumAllowedTokens(_count)
+    emit SetMaximumAllowedTokens(_count);
   }
 
   function setMaxAllowedTokensPerWallet(uint256 _count) public onlyOwner {
     maxAllowedTokensPerWallet = _count;
-    emit SetMaximumAllowedTokensPerWallet(_count)
+    emit SetMaximumAllowedTokensPerWallet(_count);
+  }
+
+  function setPresaleWalletLimitation(uint256 maxMint) external  onlyOwner {
+    presaleWalletLimitation = maxMint;
+    emit SetMaxTokenForPresale(maxMint);
   }
 
   function togglePublicSale() public onlyOwner {
@@ -111,12 +117,12 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
 
   function setPresalePrice(uint256 _presalePrice) public onlyOwner {
     presalePrice = _presalePrice;
-    emit SetPresalePrice(_price);
+    emit SetPresalePrice(_presalePrice);
   }
 
   function setBaseURI(string memory baseURI) public onlyOwner {
     _baseTokenURI = baseURI;
-    emit setBaseURI(baseURI);
+    emit SetBaseUri(baseURI);
   }
 
   function getReserveAtATime() external view returns (uint256) {
@@ -191,7 +197,6 @@ contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
   }
 
   function preSaleMint(bytes32[] calldata _merkleProof, uint256 _count) public payable isValidMerkleProof(_merkleProof) saleIsOpen {
-    uint256 mintIndex = _tokenSupply.current();
 
     require(isPresaleActive, "Presale is not active");
     require(tx.origin == msg.sender, "Calling from other contract is not allowed.");

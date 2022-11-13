@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.17;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
@@ -14,7 +14,7 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
   event SetMaxTokenForPresale(uint256 _count);
   event SetRoot(bytes32 _root);
   event SetPrice(uint256 _price);
-  event PresaleSetPrice(uint256 _price);
+  event SetPresalePrice(uint256 _price);
   event SetBaseUri(string baseURI);
   event Mint(address userAddress, uint256 _count);
 
@@ -130,12 +130,12 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
 
   function setMaximumAllowedTokens(uint256 _count) public onlyOwner {
     maxAllowedTokensPerPurchase = _count;
-    emit SetMaximumAllowedTokens(_count)
+    emit SetMaximumAllowedTokens(_count);
   }
 
   function setMaxAllowedTokensPerWallet(uint256 _count) public onlyOwner {
     maxAllowedTokensPerWallet = _count;
-    emit SetMaximumAllowedTokensPerWallet(_count)
+    emit SetMaximumAllowedTokensPerWallet(_count);
   }
 
   function togglePublicSale() public onlyOwner {
@@ -171,12 +171,12 @@ contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
 
   function setPresalePrice(uint256 _presalePrice) public onlyOwner {
     presalePrice = _presalePrice;
-    emit SetPresalePrice(_price);
+    emit SetPresalePrice(_presalePrice);
   }
 
   function setBaseURI(string memory baseURI) public onlyOwner {
     _baseTokenURI = baseURI;
-    emit setBaseURI(baseURI);
+    emit SetBaseUri(baseURI);
   }
 
   function getReserveAtATime() external view returns (uint256) {
