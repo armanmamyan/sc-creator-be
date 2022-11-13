@@ -109,8 +109,8 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="side-header">
-      {isConnected ? (
+    <header className="side-header flex items-center justify-end">
+      {!isConnected ? (
         <form
           onSubmit={buyCoffee}
           className="flex items-center justify-end header--form"
@@ -149,7 +149,9 @@ const Header = () => {
           </div>
         </form>
       ) : (
-        <button type="button" className="header--btn mx-4 p-3 rounded-md" onClick={connectWallet}>Connect wallet</button>
+        <div>
+           <button type="button" className="header--btn mx-4 p-3 rounded-md" onClick={connectWallet}>Connect wallet</button>
+        </div>
       )}
     </header>
   );

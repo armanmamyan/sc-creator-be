@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 app.use(express.static(path.resolve(__dirname, "./contracts")));
-app.use(cors({ origin: "*", credentials: true }))
+app.use(cors({ origin: "https://sc-creator.herokuapp.com/", credentials: true }))
 
 app.post("/api/create-contract", async (req, res) => {
   const packageObj = req.body;

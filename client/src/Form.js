@@ -47,7 +47,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
     try {
       const fileObj = contractDetails.NAME_WITH_SPACING.replaceAll(" ", "");
 
-      const deleteContract = await fetch(`https://nft-gear-back.herokuapp.com/api/delete-contract?contractName=${fileObj}`, {
+      const deleteContract = await fetch(`api/delete-contract?contractName=${fileObj}`, {
         method: "DELETE",
       });
       setContractDetails({});
@@ -70,7 +70,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
         CONTRACT_VERSION: isRefund ? "erc721A" : contractName.toUpperCase(),
       };
       try {
-        const createContract = await fetch("https://nft-gear-back.herokuapp.com/api/create-contract", {
+        const createContract = await fetch("api/create-contract", {
           method: "POST",
           headers: {
             Accept: "application/json",
