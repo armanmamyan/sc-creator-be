@@ -3,8 +3,17 @@ pragma solidity ^0.8.11;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract CONTRACT_NAME is ERC721A, Ownable {
+contract CONTRACT_NAME is ERC721A, ReentrancyGuard, Ownable {
+  event SetMaximumAllowedTokens(uint256 _count);
+  event SetMaximumSupply(uint256 _count);
+  event SetMaximumAllowedTokensPerWallet(uint256 _count);
+  event SetPrice(uint256 _price);
+  event SetBaseUri(string baseURI);
+  event Mint(address userAddress, uint256 _count);
+
 
   uint256 public mintPrice = MINT_PRICE ether;
 
@@ -25,16 +34,31 @@ contract CONTRACT_NAME is ERC721A, Ownable {
   }
 
   modifier saleIsOpen {
-    require(totalSupply() <= MAX_SUPPLY, "Sale has ended.");
+    require(totalSupply() < MAX_SUPPLY, "Sale has ended.");
     _;
+  }
+
+  modifier mintCompliance(uint256 _mintAmount) {
+    require(tx.origin == msg.sender, "Calling from other contract is not allowed.");
+    require(
+      _mintAmount > 0 && numberMinted(msg.sender) + _mintAmount <= maximumAllowedTokensPerWallet,
+       "Invalid mint amount or minted max amount already."
+    );
+    _;
+  }
+
+  function numberMinted(address owner) public view returns (uint256) {
+    return _numberMinted(owner);
   }
 
   function setMaximumAllowedTokens(uint256 _count) public onlyOwner {
     maxAllowedTokensPerPurchase = _count;
+    emit SetMaximumAllowedTokens(_count);
   }
 
   function setMaxAllowedTokensPerWallet(uint256 _count) public onlyOwner {
     maxAllowedTokensPerWallet = _count;
+    emit SetMaximumAllowedTokensPerWallet(_count)
   }
 
   function togglePublicSale() public onlyOwner {
@@ -43,6 +67,7 @@ contract CONTRACT_NAME is ERC721A, Ownable {
 
   function setMaxMintSupply(uint256 maxMintSupply) external  onlyOwner {
     MAX_SUPPLY = maxMintSupply;
+    emit SetMaximumSupply(maxMintSupply)
   }
 
   function setReserveAtATime(uint256 val) public onlyOwner {
@@ -55,10 +80,12 @@ contract CONTRACT_NAME is ERC721A, Ownable {
 
   function setPrice(uint256 _price) public onlyOwner {
     mintPrice = _price;
+    emit SetPrice(_price);
   }
 
   function setBaseURI(string memory baseURI) public onlyOwner {
     _baseTokenURI = baseURI;
+    emit SetBaseUri(baseURI);
   }
 
   function getReserveAtATime() external view returns (uint256) {
@@ -71,34 +98,29 @@ contract CONTRACT_NAME is ERC721A, Ownable {
 
  function reserveNft() public onlyOwner {
     require(reservedCount <= maxReserveCount, "Max Reserves taken already!");
-
+    reservedCount += reserveAtATime;
     _safeMint(msg.sender, reserveAtATime);
 
   }
 
-  function adminAirdrop(address _walletAddress, uint256 _count) public onlyOwner {
+  function adminAirdrop(uint256 _count, address _address) external onlyOwner saleIsOpen {
     uint256 supply = totalSupply();
 
     require(supply + _count <= MAX_SUPPLY, "Total supply exceeded.");
-    require(supply <= MAX_SUPPLY, "Total supply spent.");
-
-    _safeMint(_walletAddress, _count);
-
+    _safeMint(_address, _count);
   }
 
-  function batchAirdropToMultipleAddresses(uint256 _count, address[] calldata addresses) external onlyOwner {
+  function batchAirdropToMultipleAddresses(uint256 _count, address[] calldata addresses) external onlyOwner saleIsOpen {
     uint256 supply = totalSupply();
 
-    require(supply + _count <= MAX_SUPPLY, "Total supply exceeded.");
-    require(supply <= MAX_SUPPLY, "Total supply spent.");
-
     for (uint256 i = 0; i < addresses.length; i++) {
+      require(supply + _count <= MAX_SUPPLY, "Total supply exceeded.");
       require(addresses[i] != address(0), "Can't add a null address");
       _safeMint(addresses[i], _count);
     }
   }
 
-  function mint(uint256 _count) public payable saleIsOpen {
+  function mint(uint256 _count) public payable mintCompliance(_count) saleIsOpen {
     uint256 mintIndex = totalSupply();
 
     if (msg.sender != owner()) {
@@ -116,11 +138,11 @@ contract CONTRACT_NAME is ERC721A, Ownable {
     require(msg.value >= mintPrice * _count, "Insufficient ETH amount sent.");
    
     _safeMint(msg.sender, _count);
-
+    emit Mint(msg.sender, _count);
   }
 
-  function withdraw() external onlyOwner {
+  function withdraw() external onlyOwner nonReentrant {
     uint balance = address(this).balance;
-    payable(owner()).transfer(balance);
+    Address.sendValue(payable(owner()), balance);  
   }
 }

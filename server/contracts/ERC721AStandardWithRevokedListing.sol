@@ -4,6 +4,8 @@ pragma solidity ^0.8.11;
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// TO DO: IMplement
+
 contract CONTRACT_NAME is ERC721A, Ownable {
 
   address public constant proxyRegistryAddress = 0xa5409ec958C83C3f309868babACA7c86DCB077c1;

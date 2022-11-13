@@ -3,9 +3,17 @@ pragma solidity ^0.8.11;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CONTRACT_NAME is ERC721, Ownable {
+contract CONTRACT_NAME is ERC721, ReentrancyGuard, Ownable {
+  event SetMaximumAllowedTokens(uint256 _count);
+  event SetMaximumSupply(uint256 _count);
+  event SetMaximumAllowedTokensPerWallet(uint256 _count);
+  event SetPrice(uint256 _price);
+  event SetBaseUri(string baseURI);
+  event Mint(address userAddress, uint256 _count);
 
   using Counters for Counters.Counter;
   Counters.Counter private _tokenSupply;
@@ -31,7 +39,7 @@ contract CONTRACT_NAME is ERC721, Ownable {
   }
 
   modifier saleIsOpen {
-    require(_tokenSupply.current() <= MAX_SUPPLY, "Sale has ended.");
+    require(totalSupply() < MAX_SUPPLY, "Sale has ended.");
     _;
   }
 
@@ -41,18 +49,21 @@ contract CONTRACT_NAME is ERC721, Ownable {
 
   function setMaximumAllowedTokens(uint256 _count) public onlyOwner {
     maxAllowedTokensPerPurchase = _count;
+    emit SetMaximumAllowedTokens(_count);
   }
 
   function setMaxAllowedTokensPerWallet(uint256 _count) public onlyOwner {
     maxAllowedTokensPerWallet = _count;
+    emit SetMaximumAllowedTokensPerWallet(_count);
   }
 
   function togglePublicSale() public onlyOwner {
     isActive = !isActive;
   }
 
-  function setMaxMintSupply(uint256 maxMintSupply) external  onlyOwner {
+   function setMaxMintSupply(uint256 maxMintSupply) external  onlyOwner {
     MAX_SUPPLY = maxMintSupply;
+    emit SetMaximumSupply(maxMintSupply);
   }
 
   function setReserveAtATime(uint256 val) public onlyOwner {
@@ -65,6 +76,7 @@ contract CONTRACT_NAME is ERC721, Ownable {
 
   function setPrice(uint256 _price) public onlyOwner {
     mintPrice = _price;
+    emit SetPrice(_price);
   }
 
   function setBaseURI(string memory baseURI) public onlyOwner {
@@ -81,7 +93,6 @@ contract CONTRACT_NAME is ERC721, Ownable {
 
  function reserveNft() public onlyOwner {
     require(reservedCount <= maxReserveCount, "Max Reserves taken already!");
-
     uint256 i;
 
     for (i = 0; i < reserveAtATime; i++) {
@@ -91,11 +102,10 @@ contract CONTRACT_NAME is ERC721, Ownable {
     }
   }
 
-  function adminAirdrop(address _walletAddress, uint256 _count) public onlyOwner {
+  function adminAirdrop(address _walletAddress, uint256 _count) public onlyOwner saleIsOpen {
     uint256 supply = _tokenSupply.current();
 
     require(supply + _count <= MAX_SUPPLY, "Total supply exceeded.");
-    require(supply <= MAX_SUPPLY, "Total supply spent.");
     
     for (uint256 i = 0; i < _count; i++) {
       _tokenSupply.increment();
@@ -103,15 +113,12 @@ contract CONTRACT_NAME is ERC721, Ownable {
     }
   }
 
-  function batchAirdropToMultipleAddresses(uint256 _count, address[] calldata addresses) external onlyOwner {
+  function batchAirdropToMultipleAddresses(uint256 _count, address[] calldata addresses) external saleIsOpen onlyOwner {
     uint256 supply = _tokenSupply.current();
-
-    require(supply + _count <= MAX_SUPPLY, "Total supply exceeded.");
-    require(supply <= MAX_SUPPLY, "Total supply spent.");
 
     for (uint256 i = 0; i < addresses.length; i++) {
       require(addresses[i] != address(0), "Can't add a null address");
-
+      require(supply + _count <= MAX_SUPPLY, "Total supply exceeded.");
       for(uint256 j = 0; j < _count; j++) {
         _tokenSupply.increment();
         _safeMint(addresses[i], _tokenSupply.current());
@@ -120,11 +127,13 @@ contract CONTRACT_NAME is ERC721, Ownable {
   }
 
   function mint(uint256 _count) public payable saleIsOpen {
+    require(balanceOf(msg.sender) + _count <= maxAllowedTokensPerWallet, "Max holding cap reached.");
+    require(tx.origin == msg.sender, "Calling from other contract is not allowed.");
+
     uint256 mintIndex = _tokenSupply.current();
 
     if (msg.sender != owner()) {
       require(isActive, "Sale is not active currently.");
-      require(balanceOf(msg.sender) + _count <= maxAllowedTokensPerWallet, "Max holding cap reached.");
     }
 
 
@@ -140,10 +149,11 @@ contract CONTRACT_NAME is ERC721, Ownable {
       _tokenSupply.increment();
       _safeMint(msg.sender, _tokenSupply.current());
     }
+    emit Mint(msg.sender, _count);
   }
 
-  function withdraw() external onlyOwner {
+  function withdraw() external onlyOwner nonReentrant {
     uint balance = address(this).balance;
-    payable(owner()).transfer(balance);
+    Address.sendValue(payable(owner()), balance);  
   }
 }
