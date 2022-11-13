@@ -1,0 +1,32 @@
+{
+  "name": "smart-contract-creator",
+  "version": "1.0.0",
+  "description": "- [ ] ***Change Smart Contract Variation Card design*** - [ ] ***Add Some nice color pallette for the Front End*** - [ ] ***Add checkboxes for adding security checks against bot smart contracts*** - [ ] ***Add new Security check to Smart Contract against Bots***",
+  "main": "index.js",
+  "devDependencies": {},
+  "engines": {
+    "node": "16.17.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "cd client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armanmamyan/smart-contract-creator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/armanmamyan/smart-contract-creator/issues"
+  },
+  "homepage": "https://github.com/armanmamyan/smart-contract-creator#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "fs-extra": "^10.1.0",
+    "yargs": "^17.6.2"
+  }
+}
