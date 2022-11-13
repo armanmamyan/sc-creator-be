@@ -110,7 +110,7 @@ const Header = () => {
 
   return (
     <header className="side-header flex items-center justify-end">
-      {!isConnected ? (
+      {isConnected ? (
         <form
           onSubmit={buyCoffee}
           className="flex items-center justify-end header--form"
