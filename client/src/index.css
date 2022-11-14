@@ -389,16 +389,16 @@ input[type=number]::-webkit-outer-spin-button{
   object-fit: contain;
 }
 
-.header--btn{
+.brand--btn{
   transition: background-color .5s ease;
   border: 2px solid #5370f4;;
   background-color: #5370f4;
   color: #fff;
 }
 
-.header--btn:hover{
+.brand--btn:hover{
     background-color: transparent;
-    color: #000;
+    color: theme('colors.black');
 }
 
 .header--form input {
@@ -411,6 +411,40 @@ input[type=number]::-webkit-outer-spin-button{
   right: 25px;
   color: theme('colors.gray');
   font-size: 1rem;
+}
+
+.feedback--container{
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+.feedback--btn::before{
+  content: attr(data-tooltip);
+  display: block;
+  position: absolute;
+  top: -30px;
+  right: 0;
+  width: 210px;
+  height: 30px;
+  font-size: 16px;
+  background-color: theme('colors.white');
+  color: theme('colors.black');
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+  border-radius: 8px;
+  transition: opacity .5s ease;
+  opacity: 0;
+}
+
+.feedback--close-btn{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  line-height: 1.1;
+}
+
+.feedback--btn:hover::before{
+  opacity: 1;
 }
 
 @media screen and (max-width: 1800px) {

@@ -136,7 +136,6 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
   }
 
   // Effects
-
   useEffect(() => {
     window.addEventListener('beforeunload', handleSCDelete);
 
@@ -151,7 +150,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
 
   return (
     <div ref={ref} className={`form--row h-screen flex flex-col justify-center type-${checkContractType()?.toLowerCase()}`}>
-      <div className="contract-form-title flex items-center gap-3 mb-14">
+      <div className="form--title flex items-center gap-3 mb-14">
         <button type="button" onClick={handleGoBack} className="form--btn_back">
           <i className="fa-solid fa-circle-arrow-left" />
         </button>
@@ -187,21 +186,6 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
             />
             <span className="form--custom_checkbox"></span>
           </div>
-          {/* {is721A && (
-            <div className="form-wrapper flex items-center px-4 py-3">
-              <label htmlFor="revoke" className="mb-2 px-1">
-                Do you want to revoke Opensea listing gas fee ?
-              </label>
-              <input
-                id="revoke"
-                data-label="has_revoke"
-                className="form--radio"
-                type="checkbox"
-                onChange={handleInputChange}
-              />
-              <span className="form--custom_checkbox"></span>
-            </div>
-          )} */}
         </div>
         <div className="form-wrapper-input flex flex-col w-2/6 px-5">
           <label htmlFor="withSpaces" className="mb-2 px-1">
@@ -367,7 +351,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
           </button>
         </div>
       </form>
-      <div className="contract--result flex gap-5 mt-10">
+      <div className="form--result flex gap-5 mt-10">
           <div className="submission-code pb-5 px-6 w-2/3">
             <CodeMirror
               value={codemirror}
@@ -383,7 +367,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
                 href={downloadContent.url}
                 download={downloadContent.fileName}
                 onClick={handleSCDelete}
-                className="form--btn btn--download"
+                className="form--btn btn--download uppercase"
               >
                 Download contract
               </a>
@@ -392,13 +376,21 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
               <button
                 type="button"
                 onClick={handleCopy}
-                className="form--btn"
+                className="form--btn uppercase"
               >
                 Copy the code
               </button>
             </div>
+            <div className="action--btn-wrapper">
+              <a
+                href="https://remix.ethereum.org/"
+                className="form--btn uppercase"
+              >
+                Go to REMIX
+              </a>
+            </div>
           </div>
-        </div>
+      </div>
     </div>
   );
 });

@@ -118,7 +118,7 @@ const Header = () => {
           <div className="header--brand">
             <img src={Coffee} alt="" />
           </div>
-          <button type="submit" className="header--btn mx-4 p-3 rounded-md">
+          <button type="submit" className="brand--btn mx-4 p-3 rounded-md">
             Buy me a coffee
           </button>
           <div>
@@ -150,7 +150,7 @@ const Header = () => {
         </form>
       ) : (
         <div>
-           <button type="button" className="header--btn mx-4 p-3 rounded-md" onClick={connectWallet}>Connect wallet</button>
+           <button type="button" className="brand--btn mx-4 p-3 rounded-md" onClick={connectWallet}>Connect wallet</button>
         </div>
       )}
     </header>
