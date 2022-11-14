@@ -17,28 +17,28 @@ function Create() {
     setContract(id);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const templateParams = {
       from_name: name,
       message: message, 
     };
-    emailjs
-      .send(
+   
+
+    const {status} = await emailjs.send(
         "service_jxz7id5",
         "template_143c0rr",
         templateParams,
         "3coCXw2-i_7J-r96o"
-      )
-      .then(
-        () => {
-          setMessage('');
-          setName('');
-        },
-        (error) => {
-          console.log(error.text);
-        }
       );
+
+      if(status === 200) {
+        setMessage('');
+        setName('');
+      } else {
+        alert("Something went wrong. please try again later");
+      }
+
   };
 
   return (
@@ -99,20 +99,20 @@ function Create() {
               className="feedback--btn relative block bg-blue text-white w-14 h-14 rounded-full text-xl"
               data-tooltip="Have questions or suggestions?"
             >
-              <i class="fa-solid fa-message"></i>
+              <i className="fa-solid fa-message"></i>
             </button>
           ) : (
             <form className="feedback-form bg-white p-6 w-64 shadow-xl rounded" onSubmit={handleSubmit}>
               <button type="button" className="feedback--close-btn w-7 h-7 text-xl brand--btn rounded-full" onClick={() => setToggleForm(false)}>
-              <i class="fa-solid fa-xmark"></i>
+              <i className="fa-solid fa-xmark"></i>
               </button>
               <div className="flex flex-col border-b border-blue mb-6">
                   <label className="mb-4 text-sm" htmlFor="name">Your Name</label>
-                  <input name='name' id="name" type="text" className="focus:outline-none text-sm" onChange={(e) => setName(e.target.value)} />
+                  <input name='name' id="name" type="text" className="focus:outline-none text-sm" onChange={(e) => setName(e.target.value)} value={name} />
               </div>
               <div className="flex flex-col border-b border-blue mb-6">
                   <label className="mb-4 text-sm" htmlFor="message">Your feedback</label>
-                  <textarea rows={3} cols={10} name='message' id="message" type="text" className="focus:outline-none text-sm" onChange={(e) => setMessage(e.target.value)} />
+                  <textarea rows={3} cols={10} name='message' id="message" type="text" className="focus:outline-none text-sm" onChange={(e) => setMessage(e.target.value)} value={message} />
               </div>
               <button type="submit" className="brand--btn p-3 rounded-md w-full">
                 Submit
