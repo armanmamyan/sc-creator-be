@@ -361,7 +361,7 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
               editable={false}
             />
           </div>
-          <div className="contract--actions flex flex-col gap-5 w-1/3">
+          <div className="contract--actions flex flex-col gap-5 w-1/3 flex-shrink-0">
             <div className="action--btn-wrapper">
               <a
                 href={downloadContent.url}
@@ -384,6 +384,9 @@ const Form = forwardRef(({ contractName, setContract }, ref) => {
             <div className="action--btn-wrapper">
               <a
                 href="https://remix.ethereum.org/"
+                target='_blank'
+                rel="norefferer"
+                onClick={handleSCDelete}
                 className="form--btn uppercase"
               >
                 Go to REMIX

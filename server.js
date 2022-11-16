@@ -4,6 +4,7 @@ const readline = require("readline");
 const express = require("express");
 const path = require("path");
 const templatePath = path.join(__dirname, "contracts");
+const buildPath = path.join(__dirname, "./client/build");
 
 const PORT = process.env.PORT || 3001;
 
@@ -14,9 +15,12 @@ const app = express();
 // Have Node serve the files for our built React app
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.resolve(__dirname, "./client/build")));
 app.use(express.static(path.resolve(__dirname, "./contracts")));
-app.use(cors({ origin: "https://sc-creator.herokuapp.com/", credentials: true }))
+app.use('/', express.static(buildPath));
+app.use(function (req, res, next) {
+  res.sendFile(path.join(frontend, 'index.html'));
+});
+app.use(cors({ origin: "https://smartcontractbuilder.net/", credentials: true }))
 
 app.post("/api/create-contract", async (req, res) => {
   const packageObj = req.body;
