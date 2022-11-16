@@ -17,9 +17,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve(__dirname, "./contracts")));
 app.use('/', express.static(buildPath));
-app.use(function (req, res, next) {
-  res.sendFile(path.join(frontend, 'index.html'));
-});
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, './client/build"/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 app.use(cors({ origin: "https://smartcontractbuilder.net/", credentials: true }))
 
 app.post("/api/create-contract", async (req, res) => {
