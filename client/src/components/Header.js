@@ -5,7 +5,7 @@ import abi from "../utils/abi.json";
 
 // Constants
 // Contract Address & ABI
-const contractAddress = "0x4ad746Ea267202230F2D0BD37C7E49B9AE7EF173";
+const contractAddress = "0x709019bdAf0B5384609DC9f27Ab4517E1B7ca6f5";
 const contractABI = abi;
 
 const Header = () => {
