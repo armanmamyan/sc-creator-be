@@ -32,7 +32,7 @@ const Header = () => {
       const { ethereum } = window;
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
-
+      console.log(accounts);
       if (accounts.length > 0) {
         setIsConnected(true);
       } else {
